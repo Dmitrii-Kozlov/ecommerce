@@ -18,7 +18,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 from .views import home, about, contact, login_page, register_page
 
@@ -28,6 +28,7 @@ urlpatterns = [
     path('contact/', contact),
     path('login/', login_page),
     path('register/', register_page),
+    path('products/', include('products.urls')),
     path('admin/', admin.site.urls),
 ]
 
