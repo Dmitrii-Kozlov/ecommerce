@@ -12,7 +12,14 @@
   </head>
   <body>
     <div class="text-center">
-        <h1>Hello, {{ content }}!</h1>
+        <h1>Hello, {% if request.user.is_authenticated %}{{ request.user }}{% else %}Stranger{% endif %}!</h1>
+        <h2>It's {{ content }} page</h2>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h1>Premium</h1>
+            {{ premium_content }}
+        </div>
     </div>
     <!-- Optional JavaScript; choose one of the two! -->
 
