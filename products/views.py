@@ -4,6 +4,21 @@ from django.views.generic import ListView, DetailView
 
 from .models import Product
 
+
+class ProductFeaturedListView(ListView):
+    def get_queryset(self):
+        qs = Product.objects.all().featured()
+        return qs
+
+class ProductFeaturedDetailView(DetailView):
+    queryset = Product.objects.features()
+    template_name = "products/product_featured_detail.html"
+
+    # def get_queryset(self):
+    #     qs = Product.objects.featured()
+    #     return qs
+
+
 class ProductListView(ListView):
     queryset = Product.objects.all()
     template_name = "products/product_list.html"
