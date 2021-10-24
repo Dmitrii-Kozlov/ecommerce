@@ -4,6 +4,10 @@ import random
 from django.db import models
 
 # Create your models here.
+from django.db.models.signals import pre_save
+from django.utils.text import slugify
+from .utils import unique_slug_generator
+
 
 def get_filename_ext(filepath):
     base_name = os.path.basename(filepath)
@@ -43,6 +47,7 @@ class ProductManager(models.Manager):
 
 class Product(models.Model):
     title = models.CharField(max_length=120)
+    slug = models.SlugField(max_length=120, unique=True, blank=True)
     description = models.TextField()
     price = models.DecimalField(decimal_places=2, max_digits=20)
     image = models.ImageField(upload_to=upload_image_path, blank=True, null=True)
@@ -53,3 +58,14 @@ class Product(models.Model):
 
     def __str__(self):
         return self.title
+
+    # def save(self, *args, **kwargs):
+    #     if not self.slug:
+    #         self.slug = slugify(self.title)
+    #     super(Product, self).save(*args, **kwargs)
+
+def product_pre_save_receiver(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_slug_generator(instance)
+
+pre_save.connect(product_pre_save_receiver, sender=Product)
