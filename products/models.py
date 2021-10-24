@@ -5,6 +5,7 @@ from django.db import models
 
 # Create your models here.
 from django.db.models.signals import pre_save
+from django.urls import reverse
 from django.utils.text import slugify
 from .utils import unique_slug_generator
 
@@ -58,6 +59,9 @@ class Product(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('detail', args=[self.slug])
 
     # def save(self, *args, **kwargs):
     #     if not self.slug:
