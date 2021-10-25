@@ -52,6 +52,7 @@ class Product(models.Model):
     description = models.TextField()
     price = models.DecimalField(decimal_places=2, max_digits=20)
     image = models.ImageField(upload_to=upload_image_path, blank=True, null=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
     featured = models.BooleanField(default=False)
     active = models.BooleanField(default=True)
 
@@ -61,7 +62,7 @@ class Product(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('detail', args=[self.slug])
+        return reverse('products:detail', args=[self.slug])
 
     # def save(self, *args, **kwargs):
     #     if not self.slug:

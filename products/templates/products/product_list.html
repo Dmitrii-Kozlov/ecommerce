@@ -4,7 +4,7 @@
     <div class="row">
 {% for item in object_list %}
     <div class="col">
-    {% include "products/snippets/card.html" with instance=item %}
+    {% include "products/snippets/card.html" with instance=item counter=forloop.counter%}
 {#    <li><a href="{{ item.get_absolute_url }}">{{ item }}</a></li>#}
     </div>
 {% endfor %}
