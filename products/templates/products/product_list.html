@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="container">
     <div class="row">
 {% for item in object_list %}
     <div class="col">
@@ -8,6 +7,5 @@
 {#    <li><a href="{{ item.get_absolute_url }}">{{ item }}</a></li>#}
     </div>
 {% endfor %}
-    </div>
     </div>
 {% endblock %}
