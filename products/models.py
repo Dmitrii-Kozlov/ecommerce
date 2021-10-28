@@ -4,6 +4,7 @@ import random
 from django.db import models
 
 # Create your models here.
+from django.db.models import Q
 from django.db.models.signals import pre_save
 from django.urls import reverse
 from django.utils.text import slugify
@@ -29,6 +30,10 @@ class ProductQuerySet(models.query.QuerySet):
     def featured(self):
         return self.filter(featured=True, active=True)
 
+    def search(self, query):
+        lookup = Q(title__icontains=query) | Q(description__icontains=query)
+        return self.filter(lookup, active=True).distinct()
+
 class ProductManager(models.Manager):
     def all(self):
         return self.get_queryset().active()
@@ -44,6 +49,9 @@ class ProductManager(models.Manager):
         if qs.count() == 1:
             return qs.first()
         return None
+
+    def search(self, query):
+        return self.get_queryset().search(query)
 
 
 class Product(models.Model):

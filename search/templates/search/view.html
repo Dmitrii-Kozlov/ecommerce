@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="row mb-3">
+    {% if query %}
+        <div class="col-12">
+        Results for <b>{{ query }}</b><hr/>
+        </div>
+    {% else %}
+        <div class="col-12 col-md-6 mx-auto py-5">
+            {% include 'search/snippets/search-form.html' %}
+        </div>
+        <div class="col-12">
+            <hr>
+        </div>
+    {% endif %}
+    </div>
+    <div class="row">
+{% for item in object_list %}
+    <div class="col-sm-6 col-lg-3">
+    {% include "products/snippets/card.html" with instance=item counter=forloop.counter%}
+{#    <li><a href="{{ item.get_absolute_url }}">{{ item }}</a></li>#}
+    </div>
+{% endfor %}
+    </div>
+{% endblock %}
