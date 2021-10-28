@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     #local
     'products',
-    'search'
+    'search',
+    'tags'
 ]
 
 MIDDLEWARE = [

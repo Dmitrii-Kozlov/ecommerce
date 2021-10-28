@@ -31,7 +31,10 @@ class ProductQuerySet(models.query.QuerySet):
         return self.filter(featured=True, active=True)
 
     def search(self, query):
-        lookup = Q(title__icontains=query) | Q(description__icontains=query)
+        lookup = (Q(title__icontains=query) |
+                  Q(description__icontains=query) |
+                  Q(price__icontains=query) |
+                  Q(tags__title__icontains=query))
         return self.filter(lookup, active=True).distinct()
 
 class ProductManager(models.Manager):
