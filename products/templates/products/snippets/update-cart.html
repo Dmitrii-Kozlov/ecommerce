@@ -1,10 +1,14 @@
 <form class="d-flex" action="{% url 'carts:update' %}" method="post"> {% csrf_token %}
     <input type="hidden" name="product_id" value="{{ product.id }}">
+    {% if in_cart %}
+        <button type="submit" class="btn btn-link btm-sm" style="padding: 0px">Remove</button>
+    {%  else %}
             {% if product in cart.products.all %}
                 <button type="submit" class="btn btn-primary">Remove from cart</button>
             {% else %}
                 <button type="submit" class="btn btn-success">Add to cart</button>
             {% endif %}
+    {% endif %}
 </form>
 
 

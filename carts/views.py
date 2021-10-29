@@ -5,7 +5,7 @@ from products.models import Product
 
 def cart_home(request):
     cart_obj, is_new_obj = Cart.objects.get_or_create(request)
-    return render(request, 'carts/view.html', {})
+    return render(request, 'carts/view.html', {'cart': cart_obj})
 
 def cart_update(request):
     # print(request.POST)
@@ -21,5 +21,7 @@ def cart_update(request):
             cart_obj.products.add(product_obj)
         else:
             cart_obj.products.remove(product_obj)
-    return redirect('products:detail', product_obj.slug)
+        request.session['cart_items'] = cart_obj.products.count()
+    # return redirect('products:detail', product_obj.slug)
+        return redirect('carts:home')
 
