@@ -8,5 +8,5 @@ from .models import Product
 class ProductAdmin(admin.ModelAdmin):
     # class Meta:
     #     model = Product
-    list_display = ['title', 'slug']
+    list_display = ['title', 'slug', 'price']
     # prepopulated_fields = {'slug': ['title']}

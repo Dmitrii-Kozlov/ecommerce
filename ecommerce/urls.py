@@ -28,6 +28,7 @@ urlpatterns = [
     path('about/', about, name='about'),
     path('contact/', contact, name='contact'),
     path('login/', login_page, name='login'),
+    path('cart/', include('carts.urls', namespace='carts')),
     path('register/', register_page, name='register'),
     path('bootstrap/', TemplateView.as_view(template_name='bootstrap/example.html'), name='bootstrap'),
     path('products/', include('products.urls', namespace='products')),
