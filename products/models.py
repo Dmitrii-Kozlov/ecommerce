@@ -8,7 +8,7 @@ from django.db.models import Q
 from django.db.models.signals import pre_save
 from django.urls import reverse
 from django.utils.text import slugify
-from .utils import unique_slug_generator
+from ecommerce.utils import unique_slug_generator
 
 
 def get_filename_ext(filepath):
