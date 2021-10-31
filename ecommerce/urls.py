@@ -18,16 +18,19 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from django.contrib import admin
+from django.contrib.auth.views import LogoutView
 from django.urls import path, include
 from django.views.generic import TemplateView
 
-from .views import home, about, contact, login_page, register_page
+from accounts.views import login_page, register_page
+from .views import home, about, contact
 
 urlpatterns = [
     path('', home, name='home'),
     path('about/', about, name='about'),
     path('contact/', contact, name='contact'),
     path('login/', login_page, name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
     path('cart/', include('carts.urls', namespace='carts')),
     path('register/', register_page, name='register'),
     path('bootstrap/', TemplateView.as_view(template_name='bootstrap/example.html'), name='bootstrap'),

@@ -57,7 +57,7 @@ m2m_changed.connect(cart_m2m_changed_receiver, sender=Cart.products.through)
 
 def cart_pre_save_reciever(sender, instance, *args, **kwargs):
     if instance.subtotal > 0:
-        instance.total = Decimal(instance.subtotal) * Decimal(1.1)
+        instance.total = format(Decimal(instance.subtotal) * Decimal(1.1), '.2f')
     else:
         instance.total = 0
 
