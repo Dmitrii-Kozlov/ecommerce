@@ -36,6 +36,10 @@ def login_page(request):
     post_next_ = request.POST.get('next')
     redirect_path = next_ or post_next_ or None
     if form.is_valid():
+        try:
+            del request.session['guest_email_id']
+        except:
+            pass
         username = form.cleaned_data.get('username')
         password = form.cleaned_data.get('password')
         user = authenticate(request, username=username, password=password)
