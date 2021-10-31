@@ -2,6 +2,7 @@
 
 
 {% block content %}
+    {{ object.order_id }} -- {{ object.cart.id }}
     {% if not billing_profile %}
         <div class="row text-center">
             <div class="col-12 col-md-6">

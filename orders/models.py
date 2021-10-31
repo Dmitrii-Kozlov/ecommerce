@@ -14,16 +14,30 @@ ORDER_STATUS_CHOISES = (
 )
 
 
+class OrderManager(models.Manager):
+    def get_or_new(self, billing_profile, cart_obj):
+        qs = self.get_queryset().filter(billing_profile=billing_profile, cart=cart_obj, active=True)
+        if qs.count() == 1:
+            obj = qs.first()
+            created = False
+        else:
+            obj = self.model.objects.create(billing_profile=billing_profile, cart=cart_obj)
+            created = True
+        return obj, created
+
+
 class Order(models.Model):
     order_id = models.CharField(max_length=120, blank=True)
     billing_profile = models.ForeignKey(BillingProfile, null=True, blank=True, on_delete=models.CASCADE)
     # shipping_address
     # billing_address
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
-    status = models.CharField(max_length=120, choices=ORDER_STATUS_CHOISES)
+    status = models.CharField(max_length=120, choices=ORDER_STATUS_CHOISES, default=('created', 'Created'))
     shipping_total = models.DecimalField(default=5.99, max_digits=10, decimal_places=2)
     total = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
     active = models.BooleanField(default=True)
+
+    objects = OrderManager()
 
     def __str__(self):
         return self.order_id
@@ -39,7 +53,9 @@ class Order(models.Model):
 def pre_save_create_order_id(sender, instance, *args, **kwargs):
     if not instance.order_id:
         instance.order_id = unique_order_id_generator(instance)
-
+    qs = Order.objects.filter(cart=instance.cart).exclude(billing_profile=instance.billing_profile)
+    if qs.exists():
+        qs.update(active=False)
 pre_save.connect(pre_save_create_order_id, sender=Order)
 
 
