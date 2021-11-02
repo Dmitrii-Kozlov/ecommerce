@@ -5,6 +5,7 @@ from django.db.models.signals import pre_save, post_save
 from ecommerce.utils import unique_order_id_generator
 from carts.models import Cart
 from billing.models import BillingProfile
+from addresses.models import Address
 
 ORDER_STATUS_CHOISES = (
     ('created', 'Created'),
@@ -16,7 +17,7 @@ ORDER_STATUS_CHOISES = (
 
 class OrderManager(models.Manager):
     def get_or_new(self, billing_profile, cart_obj):
-        qs = self.get_queryset().filter(billing_profile=billing_profile, cart=cart_obj, active=True)
+        qs = self.get_queryset().filter(billing_profile=billing_profile, cart=cart_obj, active=True, status='created')
         if qs.count() == 1:
             obj = qs.first()
             created = False
@@ -29,10 +30,10 @@ class OrderManager(models.Manager):
 class Order(models.Model):
     order_id = models.CharField(max_length=120, blank=True)
     billing_profile = models.ForeignKey(BillingProfile, null=True, blank=True, on_delete=models.CASCADE)
-    # shipping_address
-    # billing_address
+    shipping_address = models.ForeignKey(Address, related_name='shipping_address', null=True, blank=True, on_delete=models.CASCADE)
+    billing_address = models.ForeignKey(Address, related_name='billing_address', null=True, blank=True, on_delete=models.CASCADE)
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
-    status = models.CharField(max_length=120, choices=ORDER_STATUS_CHOISES, default=('created', 'Created'))
+    status = models.CharField(max_length=120, choices=ORDER_STATUS_CHOISES, default='created')
     shipping_total = models.DecimalField(default=5.99, max_digits=10, decimal_places=2)
     total = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
     active = models.BooleanField(default=True)
@@ -48,6 +49,18 @@ class Order(models.Model):
         self.total = format(Decimal(cart_total) + Decimal(shipping_total), '.2f')
         self.save()
         return self.total
+
+    def check_done(self):
+        if self.billing_profile and self.billing_address and self.shipping_address and self.total > 0:
+            return True
+        else:
+            return False
+
+    def mark_paid(self):
+        if self.check_done():
+            self.status = 'paid'
+            self.save()
+        return self.status
 
 
 def pre_save_create_order_id(sender, instance, *args, **kwargs):

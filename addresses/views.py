@@ -15,11 +15,14 @@ def address_create_view(request):
     redirect_path = next_ or post_next_ or None
     if form.is_valid():
         instance = form.save(commit=False)
-        instance.address_type = request.POST.get('address_type', 'shipping')
+        address_type = request.POST.get('address_type', 'shipping')
+        instance.address_type = address_type
         billing_profile, created = BillingProfile.objects.new_or_get(request)
         if billing_profile is not None:
             instance.billing_profile = billing_profile
             instance.save()
+            request.session[address_type + "_address_id"] = instance.id
+            print(address_type + "_address_id")
             if is_safe_url(redirect_path, request.get_host()):
                 return redirect(redirect_path)
             else:
