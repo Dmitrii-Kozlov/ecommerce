@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from .models import Cart
 from accounts.models import GuestEmail
@@ -25,9 +26,17 @@ def cart_update(request):
         product_obj = Product.objects.get(id=product_id)
         if product_obj not in cart_obj.products.all():
             cart_obj.products.add(product_obj)
+            added = True
         else:
             cart_obj.products.remove(product_obj)
+            added = False
         request.session['cart_items'] = cart_obj.products.count()
+        if request.is_ajax():
+            data = {
+                "added": added,
+                "removed": not added
+            }
+            return JsonResponse(data)
     # return redirect('products:detail', product_obj.slug)
         return redirect('carts:home')
 
