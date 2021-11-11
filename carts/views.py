@@ -11,7 +11,13 @@ from addresses.models import Address
 
 def cart_detail_api_view(request):
     cart_obj, is_new_obj = Cart.objects.get_or_create(request)
-    products = [{"title": x.title, "price": x.price} for x in cart_obj.products.all()]
+    products = [{
+        "title": x.title,
+        "price": x.price,
+        "url": x.get_absolute_url(),
+        "id": x.id
+    }
+        for x in cart_obj.products.all()]
     return JsonResponse({"products": products, "subtotal": cart_obj.subtotal, "total": cart_obj.total})
 
 def cart_home(request):

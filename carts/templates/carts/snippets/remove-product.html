@@ -1,0 +1,6 @@
+<form class="d-flex form-product-ajax" action="{% url 'carts:update' %}" method="post"> {% csrf_token %}
+    <input class="cart-item-product-id" type="hidden" name="product_id" value="{{ product_id }}">
+        <button type="submit" class="btn btn-link btm-sm" style="padding: 0px">Remove</button>
+</form>
+
+

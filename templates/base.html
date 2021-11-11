@@ -68,15 +68,17 @@
                 data : data,
 
                 success: function (data) {
-                    console.log("success")
-                    console.log(data)
+                    let hiddenCartItemRemoveForm = $(".cart-item-remove-form")
                     if (data.products.length > 0) {
                     productRows.html(" ")
-                        i = 1
+                        i = data.products.length
                         $.each(data.products, function(index, value){
-                            cartBody.prepend("<tr><th scope=\"row\">" + i + "</th><td>" + value.title + "<td>" + value.price +"</td></tr>")
+                            let newCartItemRemove = hiddenCartItemRemoveForm.clone()
+                            newCartItemRemove.css("display", "block")
+                            newCartItemRemove.find(".cart-item-product-id").val(value.id)
+                            cartBody.prepend("<tr><th scope=\"row\">" + i + "</th><td><a href='" + value.url + "'>" + value.title + "</a>"+ newCartItemRemove.html() +"<td>" + value.price +"</td></tr>")
 
-                            i ++
+                            i --
                         })
                         cartBody.find(".cart-subtotal").text(data.subtotal)
                         cartBody.find(".cart-total").text(data.total)
