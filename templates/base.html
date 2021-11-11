@@ -31,15 +31,19 @@
                   method: httpMethod,
                   data: formData,
                   success: function (data) {
-                    console.log("success")
-                    console.log(data)
                     let submitSpan = thisForm.find(".submit-span")
-                    console.log(submitSpan.html())
                       if (data.added) {
                           submitSpan.html("<button type=\"submit\" class=\"btn btn-primary\">Remove from cart</button>")
                       } else {
                           submitSpan.html("<button type=\"submit\" class=\"btn btn-success\">Add to cart</button>")
                       }
+                    let cartCount = $(".navbar-cart-count")
+                    cartCount.text(data.navbarCartCount)
+
+                    let currentPath = window.location.href
+                    if (currentPath.indexOf("cart") != -1) {
+                        updateCart()
+                    }
                   },
                   error: function (errorData) {
                     console.log("error")
@@ -47,6 +51,51 @@
                   }
               })
           })
+        function updateCart() {
+            console.log("in current cart")
+            let cartTable = $(".cart-table")
+            let cartBody = cartTable.find(".cart-body")
+            let productRows = cartBody.find(".cart-product")
+            //cartBody.html("<h1>Changed</h1>")
+            let currentUrl = window.location.href
+            let updateCartMethod = 'GET'
+            let updateCartUrl = '/api/cart'
+            let data = {}
+
+            $.ajax({
+                url: updateCartUrl,
+                method: updateCartMethod,
+                data : data,
+
+                success: function (data) {
+                    console.log("success")
+                    console.log(data)
+                    if (data.products.length > 0) {
+                    productRows.html(" ")
+                        i = 1
+                        $.each(data.products, function(index, value){
+                            cartBody.prepend("<tr><th scope=\"row\">" + i + "</th><td>" + value.title + "<td>" + value.price +"</td></tr>")
+
+                            i ++
+                        })
+                        cartBody.find(".cart-subtotal").text(data.subtotal)
+                        cartBody.find(".cart-total").text(data.total)
+
+                    } else {
+                        window.location.href = currentUrl
+                    }
+
+
+                },
+                error: function (errorData) {
+                    console.log("error")
+                    console.log(errorData)
+
+                }
+
+            })
+        }
+
       })
   </script>
   </body>
