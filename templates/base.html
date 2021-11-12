@@ -18,6 +18,44 @@
   {% include "base/js.html" %}
   <script>
       $(document).ready(function () {
+          // Contact Form
+          let contactForm = $(".contact-form")
+          let contactFormMethod = contactForm.attr("method")
+          let contactFormEndpoint = contactForm.attr("action")
+          contactForm.submit(function (event) {
+                event.preventDefault()
+              let contactFormData = contactForm.serialize()
+              let thisForm =$(this)
+              $.ajax({
+                  method: contactFormMethod,
+                  url: contactFormEndpoint,
+                  data: contactFormData,
+                  success: function (data) {
+                    thisForm[0].reset()
+                      $.alert({
+                          title: "Thank you!",
+                          content: data.success_message,
+                          theme: "modern"
+                      })
+                  },
+                  error: function (error) {
+                      console.log(error)
+                      let errorData = error.responseJSON
+                      let msg = ""
+                      $.each(errorData, function (key, value) {
+                        msg += key + ": " + value[0].message + "<br>"
+                      })
+                    $.alert({
+                          title: "Oops!",
+                          content: msg,
+                          theme: "modern"
+                      })
+                  }
+              })
+          })
+
+
+          // Add Product to Cart
           let productForm = $(".form-product-ajax")
           productForm.submit(function (event) {
             event.preventDefault()
