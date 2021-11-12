@@ -48,6 +48,7 @@ def cart_update(request):
                 "navbarCartCount": cart_obj.products.count()
             }
             return JsonResponse(data)
+            # return JsonResponse({"errormessage": "Error 400"}, status=400)
     # return redirect('products:detail', product_obj.slug)
         return redirect('carts:home')
 

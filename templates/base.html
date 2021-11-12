@@ -46,8 +46,12 @@
                     }
                   },
                   error: function (errorData) {
-                    console.log("error")
-                    console.log(errorData)
+                      $.alert({
+                          title: "Oops!",
+                          content: "Error",
+                          theme: "modern"
+                      })
+
                   }
               })
           })
@@ -90,8 +94,11 @@
 
                 },
                 error: function (errorData) {
-                    console.log("error")
-                    console.log(errorData)
+                    $.alert({
+                          title: "Oops!",
+                          content: "Error",
+                          theme: "modern"
+                      })
 
                 }
 
