@@ -2,13 +2,14 @@ from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.db import models
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, is_staff=False, is_admin=False, is_active=True, password=None):
+    def create_user(self, email, full_name=None, is_staff=False, is_admin=False, is_active=True, password=None):
         if not email:
             raise ValueError("Users must have an email address!")
         if not password:
             raise ValueError("Users must have a password!")
         user_obj = self.model(
-            email = self.normalize_email(email)
+            email = self.normalize_email(email),
+            full_name = full_name
         )
         user_obj.staff = is_staff
         user_obj.admin = is_admin
@@ -17,17 +18,19 @@ class UserManager(BaseUserManager):
         user_obj.save(using=self._db)
         return user_obj
 
-    def create_staffuser(self, email, password=None):
+    def create_staffuser(self, email, full_name=None, password=None):
         user_obj = self.create_user(
             email,
+            full_name=full_name,
             password=password,
             is_staff=True
         )
         return user_obj
 
-    def create_superuser(self, email, password=None):
+    def create_superuser(self, email, full_name=None, password=None):
         user_obj = self.create_user(
             email,
+            full_name=full_name,
             password=password,
             is_staff=True,
             is_admin=True
@@ -53,6 +56,8 @@ class User(AbstractBaseUser):
         return self.email
 
     def get_full_name(self):
+        if self.full_name:
+            return self.full_name
         return self.email
 
     def get_short_name(self):
