@@ -1,0 +1,58 @@
+[
+{
+    "model": "products.product",
+    "pk": 1,
+    "fields": {
+        "title": "blue hat",
+        "slug": "blue-hat",
+        "description": "blue hat description",
+        "price": "12.00",
+        "image": "products/949831693292/949831693292.jpeg",
+        "timestamp": "2021-10-31T10:22:57.516Z",
+        "featured": false,
+        "active": true
+    }
+},
+{
+    "model": "products.product",
+    "pk": 2,
+    "fields": {
+        "title": "blue coat",
+        "slug": "blue-coat",
+        "description": "blue coat description",
+        "price": "35.00",
+        "image": "",
+        "timestamp": "2021-10-31T10:23:17.505Z",
+        "featured": false,
+        "active": true
+    }
+},
+{
+    "model": "products.product",
+    "pk": 3,
+    "fields": {
+        "title": "green hat",
+        "slug": "green-hat",
+        "description": "green hat description",
+        "price": "13.00",
+        "image": "",
+        "timestamp": "2021-10-31T10:23:33.659Z",
+        "featured": false,
+        "active": true
+    }
+},
+{
+    "model": "products.product",
+    "pk": 4,
+    "fields": {
+        "title": "green coat",
+        "slug": "green-coat",
+        "description": "green coat description",
+        "price": "40.00",
+        "image": "",
+        "timestamp": "2021-10-31T10:23:51.837Z",
+        "featured": false,
+        "active": true
+    }
+}
+]
