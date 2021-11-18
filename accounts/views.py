@@ -5,6 +5,7 @@ from django.views.generic import CreateView, FormView
 
 from .forms import LoginForm, RegisterForm, GuestForm
 from .models import GuestEmail
+from .signals import user_logged_in_signal
 
 
 def guest_register_view(request):
@@ -52,6 +53,7 @@ class LoginView(FormView):
         user = authenticate(request, username=email, password=password)
         if user is not None:
             login(request, user)
+            user_logged_in_signal.send(user.__class__, instance=user, request=request)
             if is_safe_url(redirect_path, request.get_host()):
                 return redirect(redirect_path)
             else:

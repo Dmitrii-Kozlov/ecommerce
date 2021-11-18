@@ -49,6 +49,10 @@ INSTALLED_APPS = [
     'tags'
 ]
 
+
+FORCE_SESSION_TO_ONE = False
+FORCE_INACTIVE_USER_ENDSESSION = False
+
 LOGOUT_REDIRECT_URL = '/login'
 
 AUTH_USER_MODEL = 'accounts.User'
