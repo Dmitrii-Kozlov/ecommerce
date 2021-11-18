@@ -3,6 +3,8 @@ from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView
 
 from .models import Product
+# from analytics.signals import object_viewed_signal
+from analytics.mixins import ObjectViewedMixin
 from carts.models import Cart
 
 
@@ -11,7 +13,7 @@ class ProductFeaturedListView(ListView):
         qs = Product.objects.all().featured()
         return qs
 
-class ProductFeaturedDetailView(DetailView):
+class ProductFeaturedDetailView(ObjectViewedMixin, DetailView):
     queryset = Product.objects.features()
     template_name = "products/product_featured_detail.html"
 
@@ -40,7 +42,7 @@ def product_list_view(request):
     }
     return render(request, "products/product_list.html", context)
 
-class ProductDetailSlugView(DetailView):
+class ProductDetailSlugView(ObjectViewedMixin, DetailView):
     queryset = Product.objects.all()
 
     def get_context_data(self, **kwargs):
@@ -60,9 +62,10 @@ class ProductDetailSlugView(DetailView):
             instance = qs.first()
         except:
             raise Http404("Unknown thing...")
+        # object_viewed_signal.send(instance.__class__, instance=instance, request=request)
         return instance
 
-class ProductDetailView(DetailView):
+class ProductDetailView(ObjectViewedMixin, DetailView):
     queryset = Product.objects.all()
     # template_name = "products/product_detail.html"
 
