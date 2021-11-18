@@ -60,7 +60,7 @@ class GuestForm(forms.Form):
 
 
 class LoginForm(forms.Form):
-    username = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'form-control'}))
+    email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'form-control'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
 
 
@@ -100,8 +100,8 @@ class RegisterForm(forms.ModelForm):
         # Save the provided password in hashed format
         user = super().save(commit=False)
         user.set_password(self.cleaned_data["password"])
+        # user.active = False # for confirmation email
         if commit:
-            user.active = False
             user.save()
         return user
 #

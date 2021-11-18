@@ -8,8 +8,8 @@ class UserManager(BaseUserManager):
         if not password:
             raise ValueError("Users must have a password!")
         user_obj = self.model(
-            email = self.normalize_email(email),
-            full_name = full_name
+            email=self.normalize_email(email),
+            full_name=full_name
         )
         user_obj.staff = is_staff
         user_obj.admin = is_admin

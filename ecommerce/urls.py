@@ -22,7 +22,7 @@ from django.contrib.auth.views import LogoutView
 from django.urls import path, include
 from django.views.generic import TemplateView
 
-from accounts.views import login_page, register_page, guest_register_view
+from accounts.views import LoginView, guest_register_view, RegisterView
 from addresses.views import address_create_view, address_reuse_view
 from carts.views import cart_detail_api_view
 from .views import home, about, contact
@@ -31,14 +31,14 @@ urlpatterns = [
     path('', home, name='home'),
     path('about/', about, name='about'),
     path('contact/', contact, name='contact'),
-    path('login/', login_page, name='login'),
+    path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('api/cart/', cart_detail_api_view, name='cart-api'),
     path('cart/', include('carts.urls', namespace='carts')),
     path('address/create/', address_create_view, name='address_create'),
     path('address/reuse/', address_reuse_view, name='address_reuse'),
     path('register/guest', guest_register_view, name='guest_register'),
-    path('register/', register_page, name='register'),
+    path('register/', RegisterView.as_view(), name='register'),
     path('bootstrap/', TemplateView.as_view(template_name='bootstrap/example.html'), name='bootstrap'),
     path('products/', include('products.urls', namespace='products')),
     path('search/', include('search.urls', namespace='search')),

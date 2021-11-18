@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     #local
     'accounts',
     'addresses',
+    'analytics',
     'billing',
     'carts',
     'orders',
